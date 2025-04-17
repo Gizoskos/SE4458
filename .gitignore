@@ -19,6 +19,8 @@ target/
 *.iml
 *.ipr
 out/
+.render.yaml
+
 
 ### NetBeans ###
 /nbproject/private/
