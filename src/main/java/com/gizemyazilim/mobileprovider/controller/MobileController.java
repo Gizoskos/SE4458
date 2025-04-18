@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v{version}")
 public class MobileController {
 
     private final UsageService usageService;
@@ -36,45 +36,50 @@ public class MobileController {
         this.subscriberRepository = subscriberRepository;
     }
 
-    // 🔓 No Auth
+    //  No Auth
     @GetMapping("/bill")
-    public ResponseEntity<BillSummaryDto> getBillSummary(@RequestParam Long subscriberNo,
+    public ResponseEntity<BillSummaryDto> getBillSummary(@PathVariable String version,
+                                                         @RequestParam Long subscriberNo,
                                                          @RequestParam String month,
                                                          @RequestParam int year) {
         return ResponseEntity.ok(billQueryService.getBillSummary(subscriberNo, month, year));
     }
 
-    // 🔐 Requires Auth + Paging
+    //  Requires Auth + Paging
     @GetMapping("/bill-detailed")
-    public ResponseEntity<Page<BillDetailedDto>> getBillDetails(@RequestParam String month,
+    public ResponseEntity<Page<BillDetailedDto>> getBillDetails(@PathVariable String version,
+                                                                @RequestParam String month,
                                                                 @RequestParam int year,
                                                                 @RequestParam(defaultValue = "0") int page,
                                                                 @RequestParam(defaultValue = "10") int size) {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
         Subscriber subscriber = subscriberRepository.findByAppUserUsername(currentUsername)
-                .orElseThrow(() -> new RuntimeException("Bu kullanıcıya ait abone bulunamadı"));
+                .orElseThrow(() -> new RuntimeException("No subscribers found for this user"));
 
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(billDetailService.getBillDetails(subscriber.getId(), month, year, pageable));
     }
 
-    // 🔓 No Auth
+    //  No Auth
 
     @PostMapping("/pay")
-    public ResponseEntity<String> payBill(@RequestBody PayBillRequestDto dto) {
+    public ResponseEntity<String> payBill(@PathVariable String version,
+                                          @RequestBody PayBillRequestDto dto) {
         return ResponseEntity.ok(paymentService.payBill(dto));
     }
 
-    // 🔐 Requires Auth
+    //  Requires Auth
     @PostMapping("/billing/calculate")
-    public ResponseEntity<String> calculateBill(@RequestBody CalculateBillRequestDto dto) {
+    public ResponseEntity<String> calculateBill(@PathVariable String version,
+                                                @RequestBody CalculateBillRequestDto dto) {
         billingService.calculate(dto);
         return ResponseEntity.ok("Bill calculated");
     }
 
-    // 🔐 Requires Auth
+    //  Requires Auth
     @PostMapping("/usage")
-    public ResponseEntity<String> addUsage(@RequestBody AddUsageRequestDto dto) {
+    public ResponseEntity<String> addUsage(@PathVariable String version,
+                                           @RequestBody AddUsageRequestDto dto) {
         usageService.addUsage(dto);
         return ResponseEntity.ok("Usage added successfully");
     }

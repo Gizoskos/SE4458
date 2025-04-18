@@ -1,6 +1,5 @@
 package com.gizemyazilim.mobileprovider.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

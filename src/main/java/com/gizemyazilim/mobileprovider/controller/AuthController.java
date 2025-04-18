@@ -6,7 +6,6 @@ import com.gizemyazilim.mobileprovider.entity.Subscriber;
 import com.gizemyazilim.mobileprovider.repository.AppUserRepository;
 import com.gizemyazilim.mobileprovider.repository.SubscriberRepository;
 import com.gizemyazilim.mobileprovider.service.JwtService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.User;
@@ -14,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v{version}/auth")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -32,7 +31,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody AuthRequest request) {
+    public ResponseEntity<String> register(@PathVariable String version,
+                                           @RequestBody AuthRequest request) {
         AppUser user = new AppUser();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -48,7 +48,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> login(@PathVariable String version,
+                                              @RequestBody AuthRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
