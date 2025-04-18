@@ -13,7 +13,7 @@ public class Usage {
 
     @ManyToOne
     private Subscriber subscriber;
-
+    private boolean billed = false;
     private String month;
     private int year;
 
@@ -24,13 +24,14 @@ public class Usage {
 
     public Usage() {}
 
-    public Usage(Long id, Subscriber subscriber, String month, int year, UsageType type, int amount) {
+    public Usage(Long id, Subscriber subscriber, String month, int year, UsageType type, int amount, boolean billed) {
         this.id = id;
         this.subscriber = subscriber;
         this.month = month;
         this.year = year;
         this.type = type;
         this.amount = amount;
+        this.billed = billed;
     }
 
     public Long getId() { return id; }
@@ -50,4 +51,11 @@ public class Usage {
 
     public int getAmount() { return amount; }
     public void setAmount(int amount) { this.amount = amount; }
+    public boolean isBilled() {
+        return billed;
+    }
+
+    public void setBilled(boolean billed) {
+        this.billed = billed;
+    }
 }

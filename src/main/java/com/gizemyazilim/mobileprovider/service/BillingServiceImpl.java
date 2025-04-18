@@ -6,6 +6,7 @@ import com.gizemyazilim.mobileprovider.repository.*;
 import com.gizemyazilim.mobileprovider.service.BillingService;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BillingServiceImpl implements BillingService {
@@ -26,10 +27,21 @@ public class BillingServiceImpl implements BillingService {
         Subscriber subscriber = subscriberRepository.findById(dto.getSubscriberNo())
                 .orElseThrow(() -> new RuntimeException("Subscriber not found"));
 
-        List<Usage> usages = usageRepository.findBySubscriberAndMonthAndYear(subscriber, dto.getMonth(), dto.getYear());
+        List<Usage> usages = usageRepository.findBySubscriberAndMonthAndYear(subscriber, dto.getMonth(), dto.getYear())
+                .stream().filter(u -> !u.isBilled()).toList();
 
-        int phoneTotal = usages.stream().filter(u -> u.getType() == UsageType.PHONE).mapToInt(Usage::getAmount).sum();
-        int internetTotal = usages.stream().filter(u -> u.getType() == UsageType.INTERNET).mapToInt(Usage::getAmount).sum();
+        if (usages.isEmpty()) {
+            throw new RuntimeException("No new usage to bill.");
+        }
+        int phoneTotal = usages.stream()
+                .filter(u -> u.getType() == UsageType.PHONE)
+                .mapToInt(Usage::getAmount)
+                .sum();
+
+        int internetTotal = usages.stream()
+                .filter(u -> u.getType() == UsageType.INTERNET)
+                .mapToInt(Usage::getAmount)
+                .sum();
 
         double total = 0.0;
 
@@ -51,15 +63,20 @@ public class BillingServiceImpl implements BillingService {
 
         Bill bill = billRepository.findBySubscriberAndMonthAndYear(subscriber, dto.getMonth(), dto.getYear())
                 .orElse(new Bill());
-
         bill.setSubscriber(subscriber);
         bill.setMonth(dto.getMonth());
         bill.setYear(dto.getYear());
-        bill.setPhoneMinutes(phoneTotal);
-        bill.setInternetMb(internetTotal);
-        bill.setTotalAmount(total);
-        bill.setPaid(false);
 
+        bill.setPhoneMinutes(bill.getPhoneMinutes() + phoneTotal);
+        bill.setInternetMb(bill.getInternetMb() + internetTotal);
+        bill.setTotalAmount(bill.getTotalAmount() + total);
+
+        bill.setPaid(false);
         billRepository.save(bill);
+
+        usages.forEach(u -> {
+            u.setBilled(true);
+            usageRepository.save(u);
+        });
     }
 }

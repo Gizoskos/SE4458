@@ -39,7 +39,6 @@ public class PaymentServiceImpl implements PaymentService {
         Bill bill = billRepository.findBySubscriberAndMonthAndYear(subscriber, dto.getMonth(), dto.getYear())
                 .orElseThrow(() -> new RuntimeException("Bill not found"));
 
-
         if (bill.isPaid()) {
             response.put("paymentStatus", "ALREADY_PAID");
             response.put("isPaid", true);
