@@ -54,6 +54,11 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
         String token = jwtService.generateToken(request.getUsername());
-        return ResponseEntity.ok(new AuthResponse(token));
+        AppUser user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        Subscriber subscriber = subscriberRepository.findByAppUserUsername(user.getUsername())
+                .orElseThrow(() -> new RuntimeException("Subscriber not found"));
+
+        return ResponseEntity.ok(new AuthResponse(token, subscriber.getId()));
     }
 }
