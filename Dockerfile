@@ -1,6 +1,6 @@
 FROM openjdk:17-jdk-slim
 
-ARG JAR_FILE=target/*.jar
+ARG JAR_FILE=target/mobile-provider-0.0.1-SNAPSHOT.jar app.jar
 
 COPY ${JAR_FILE} app.jar
 
