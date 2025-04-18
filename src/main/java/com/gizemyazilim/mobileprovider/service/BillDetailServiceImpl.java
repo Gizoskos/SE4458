@@ -1,8 +1,10 @@
 package com.gizemyazilim.mobileprovider.service;
 
 import com.gizemyazilim.mobileprovider.dto.BillDetailedDto;
+import com.gizemyazilim.mobileprovider.entity.Bill;
 import com.gizemyazilim.mobileprovider.entity.Subscriber;
 import com.gizemyazilim.mobileprovider.entity.Usage;
+import com.gizemyazilim.mobileprovider.repository.BillRepository;
 import com.gizemyazilim.mobileprovider.repository.SubscriberRepository;
 import com.gizemyazilim.mobileprovider.repository.UsageRepository;
 import com.gizemyazilim.mobileprovider.service.BillDetailService;
@@ -17,10 +19,12 @@ public class BillDetailServiceImpl implements BillDetailService {
 
     private final SubscriberRepository subscriberRepository;
     private final UsageRepository usageRepository;
+    private final BillRepository billRepository;
 
-    public BillDetailServiceImpl(SubscriberRepository subscriberRepository, UsageRepository usageRepository) {
+    public BillDetailServiceImpl(SubscriberRepository subscriberRepository, UsageRepository usageRepository, BillRepository billRepository) {
         this.subscriberRepository = subscriberRepository;
         this.usageRepository = usageRepository;
+        this.billRepository = billRepository;
     }
 
 
@@ -30,9 +34,19 @@ public class BillDetailServiceImpl implements BillDetailService {
                 .orElseThrow(() -> new RuntimeException("Subscriber not found"));
 
         List<Usage> usages = usageRepository.findBySubscriberAndMonthAndYear(subscriber, month, year);
+        Bill bill = billRepository.findBySubscriberAndMonthAndYear(subscriber, month, year)
+                .orElseThrow(() -> new RuntimeException("Bill not found"));
 
         List<BillDetailedDto> dtos = usages.stream()
-                .map(u -> new BillDetailedDto(u.getType().toString(), u.getAmount()))
+                .map(u -> {
+                    String unit = switch (u.getType().toString()) {
+                        case "PHONE" -> "minute";
+                        case "INTERNET" -> "MB";
+                        case "SMS" -> "count";
+                        default -> "unit";
+                    };
+                    return new BillDetailedDto(u.getType().toString(), u.getAmount(), unit, bill.getTotalAmount());
+                })
                 .collect(Collectors.toList());
 
         int start = (int) pageable.getOffset();

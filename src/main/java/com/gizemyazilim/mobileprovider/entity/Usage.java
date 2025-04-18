@@ -12,9 +12,6 @@ public class Usage {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "app_user_id")
-    private AppUser appUser;
-    @ManyToOne
     private Subscriber subscriber;
 
     private String month;
@@ -27,10 +24,9 @@ public class Usage {
 
     public Usage() {}
 
-    public Usage(Long id, AppUser appUser, Subscriber subscriber, String month, int year, UsageType type, int amount) {
+    public Usage(Long id, Subscriber subscriber, String month, int year, UsageType type, int amount) {
         this.id = id;
         this.subscriber = subscriber;
-        this.appUser = appUser;
         this.month = month;
         this.year = year;
         this.type = type;
@@ -52,8 +48,6 @@ public class Usage {
     public UsageType getType() { return type; }
     public void setType(UsageType type) { this.type = type; }
 
-    public AppUser getAppUser() { return appUser; }
-    public void setAppUser(AppUser appUser) { this.appUser = appUser; }
     public int getAmount() { return amount; }
     public void setAmount(int amount) { this.amount = amount; }
 }

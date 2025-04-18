@@ -21,7 +21,7 @@ public class UsageServiceImpl implements UsageService {
         String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Subscriber subscriber = subscriberRepository.findByAppUserUsername(currentUsername)
-                .orElseThrow(() -> new RuntimeException("Bu kullanıcıya ait abone bulunamadı"));
+                .orElseThrow(() -> new RuntimeException("No subscribers found for this user"));
 
         Usage usage = new Usage();
         usage.setSubscriber(subscriber);
