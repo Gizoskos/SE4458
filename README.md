@@ -8,7 +8,7 @@ A RESTful backend system for managing mobile usage, billing, and payments for su
 
 - **GitHub Repository:** [https://github.com/Gizoskos/SE4458](https://github.com/Gizoskos/SE4458)
 - **Swagger UI:** https://se4458.onrender.com/swagger-ui/index.html *(replace if custom domain used)*
-- **Project Presentation Video:** [Google Drive](https://drive.google.com/...) *(replace with your actual video link)*
+- **Project Presentation Video:** [Google Drive](https://drive.google.com/...) *(I will replace with my actual video link)*
 
 ---
 
@@ -122,14 +122,15 @@ mvn spring-boot:run
 Swagger:
 http://localhost:8080/swagger-ui/index.html
 
-🔍 Issues Encountered & Fixes
+## 🔍 Issues Encountered & Fixes
 
-Problem	Solution
+ Problem Solution
 Usage data was being double billed	Added billed flag in Usage entity
 Paid bills were being overwritten	Prevented recalculation if isPaid=true
 No subscriber reference on login	Included subscriber ID in AuthResponse
 Swagger JWT token not working	Configured Swagger to accept Bearer tokens
-🧑‍💻 Author
+
+## 🧑‍💻 Author
 Gizem Gültoprak
 Software Engineering - Yaşar University
 GitHub: Gizoskos
