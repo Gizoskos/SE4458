@@ -124,7 +124,7 @@ http://localhost:8080/swagger-ui/index.html
 
 ## 🔍 Issues Encountered & Fixes
 
-Problem Solution
+#Problem Solution
 Usage data was being double billed-->Added billed flag in Usage entity
 Paid bills were being overwritten-->Prevented recalculation if isPaid=true
 No subscriber reference on login-->Included subscriber ID in AuthResponse
