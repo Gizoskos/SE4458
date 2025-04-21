@@ -61,12 +61,17 @@ A RESTful backend system for managing mobile usage, billing, and payments for su
 
 ## Assumptions & Design Decisions
 
-- ✅ A `Subscriber` is **automatically created** upon registration of an `AppUser`.
-- ✅ On login, the **subscriber ID is returned** along with the JWT token for convenience.
-- ✅ **Amount is not passed** to the calculate API; it is derived from usage records only.
-- ✅ Usage entities include a `billed` flag to ensure only **new usage records** are considered during calculation.
-- ✅ If the bill is fully paid (`isPaid = true`) and new usage is added, **a new bill is generated**.
-- ✅ Swagger UI allows interaction with secure and public endpoints via JWT Bearer input.
+-  A `Subscriber` is **automatically created** upon registration of an `AppUser`.
+-  On login, the **subscriber ID is returned** along with the JWT token for convenience.
+-  **Amount is not passed** to the calculate API; it is derived from usage records only.
+-  Months are represented as strings like "May", "June", "September" instead of numeric formats. This is assumed throughout the system.
+-  The billing system calculates the total amount only based on new usage that hasn’t been billed yet (billed = false).
+-  Usage entities include a `billed` flag to ensure only **new usage records** are considered during calculation.
+-  If the bill is fully paid (`isPaid = true`) and new usage is added, **a new bill is generated**.
+-  A bill with isPaid = true cannot be recalculated. This prevents overwriting finalized bills.
+-  If the bill has not been fully paid, the remaining unpaid amount will be added on top of the newly calculated charges.
+-  Pay takes amount from the user for partial payments.
+-  Swagger UI allows interaction with secure and public endpoints via JWT Bearer input.
 
 ---
 
@@ -133,29 +138,6 @@ Table Bill {
 ** Add partial payment → Bill keeps remaining amount and is not marked as paid
 
 ** Swagger supports JWT token entry → Allows secure endpoint testing
-
-
-##  Assumptions
-
-A Subscriber is automatically created with every new AppUser upon registration.
-
-On login, both JWT token and the corresponding subscriberId are returned for client-side convenience.
-
-The billing system calculates the total amount only based on new usage that hasn’t been billed yet (billed = false).
-
-A boolean billed flag was added to the Usage entity to track whether each record has already been used in a bill.
-
-A bill with isPaid = true cannot be recalculated. This prevents overwriting finalized bills.
-
-If new usage is added after a bill has been fully paid, a new bill is generated using the new records.
-
-If the bill has not been fully paid, the remaining unpaid amount will be added on top of the newly calculated charges.
-
-Swagger UI was configured to allow easy testing of protected routes by accepting Bearer tokens.
-
-Pay takes amount from the user for partial payments.
-
-Months are represented as strings like "May", "June", "September" instead of numeric formats. This is assumed throughout the system.
 
 
 ##  How to Run Locally
