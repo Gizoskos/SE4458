@@ -87,14 +87,71 @@ Usage: Usage data for a subscriber in a month (billed flag added)
 
 Bill: Stores calculated usage totals and payment info
 
+Table AppUser {
+  id bigint [pk, increment]
+  username varchar
+  password varchar
+}
+
+Table Subscriber {
+  id bigint [pk, increment]
+  name varchar
+  app_user_id bigint [ref: > AppUser.id]
+}
+
+Table Usage {
+  id bigint [pk, increment]
+  type varchar
+  amount int
+  month varchar
+  year int
+  billed boolean
+  subscriber_id bigint [ref: > Subscriber.id]
+}
+
+Table Bill {
+  id bigint [pk, increment]
+  subscriber_id bigint [ref: > Subscriber.id]
+  month varchar
+  year int
+  phoneMinutes int
+  internetMb int
+  totalAmount double
+  isPaid boolean
+}
+
+
 ✅ Sample Scenarios
 ✅ Register → Login → Add Usage → Calculate Bill → Pay → Query Summary
 
-✅ Add more usage after bill paid → Recalculate → New Bill generated
+✅ Add new usage to same month → Recalculate → If bill is paid → New bill created
 
 ✅ Add partial payment → Bill keeps remaining amount and is not marked as paid
 
-✅ Swagger works with JWT token for protected routes
+✅ Swagger supports JWT token entry → Allows secure endpoint testing
+
+
+
+✅ Assumptions
+A Subscriber is automatically created with every new AppUser upon registration.
+
+On login, both JWT token and the corresponding subscriberId are returned for client-side convenience.
+
+The billing system calculates the total amount only based on new usage that hasn’t been billed yet (billed = false).
+
+A boolean billed flag was added to the Usage entity to track whether each record has already been used in a bill.
+
+A bill with isPaid = true cannot be recalculated. This prevents overwriting finalized bills.
+
+If new usage is added after a bill has been fully paid, a new bill is generated using the new records.
+
+If the bill has not been fully paid, the remaining unpaid amount will be added on top of the newly calculated charges.
+
+Swagger UI was configured to allow easy testing of protected routes by accepting Bearer tokens.
+
+Pay takes amount from the user for partial payments.
+
+Months are represented as strings like "May", "June", "September" instead of numeric formats. This is assumed throughout the system.
 
   How to Run Locally
 Clone the repo:
@@ -122,15 +179,15 @@ mvn spring-boot:run
 Swagger:
 http://localhost:8080/swagger-ui/index.html
 
-## 🔍 Issues Encountered & Fixes
+##  Issues Encountered & Fixes
 
-#Problem Solution
+Problem Solutions:
 Usage data was being double billed-->Added billed flag in Usage entity
 Paid bills were being overwritten-->Prevented recalculation if isPaid=true
 No subscriber reference on login-->Included subscriber ID in AuthResponse
 Swagger JWT token not working-->Configured Swagger to accept Bearer tokens
 
-## 🧑‍💻 Author
+##  Author
 Gizem Gültoprak
 Software Engineering - Yaşar University
 GitHub: Gizoskos
