@@ -103,6 +103,7 @@ Bill: Stores calculated usage totals and payment info
 
 ##  How to Run Locally
 
+```text
 Clone the repo:
 
 bash
@@ -127,7 +128,7 @@ mvn clean install
 mvn spring-boot:run
 Swagger:
 http://localhost:8080/swagger-ui/index.html
-
+```
 
 ##  Issues Encountered & Fixes
 
