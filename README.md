@@ -8,7 +8,7 @@ A RESTful backend system for managing mobile usage, billing, and payments for su
 
 - **GitHub Repository:** [https://github.com/Gizoskos/SE4458](https://github.com/Gizoskos/SE4458)
 - **Swagger UI:** https://mobile-provider-api.onrender.com/swagger-ui/index.html
-- **Project Presentation Video:** [GoogleDrive](https://drive.google.com/file/d/1_AxORA5zgcFXUMZpCBs5GKw8E_893pMN/view?usp=drive_link])
+- **Project Presentation Video:** [GoogleDrive](https://drive.google.com/file/d/1_AxORA5zgcFXUMZpCBs5GKw8E_893pMN/view?usp=drivesdk])
 
 ---
 
