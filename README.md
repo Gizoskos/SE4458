@@ -80,13 +80,6 @@ A RESTful backend system for managing mobile usage, billing, and payments for su
 
 ```text
 
-AppUser ──────┐
-              ▼
-         Subscriber ──< Usage
-                        │
-                        ▼
-                      Bill
-
 AppUser: Login credentials
 
 Subscriber: One per AppUser
@@ -94,39 +87,6 @@ Subscriber: One per AppUser
 Usage: Usage data for a subscriber in a month (billed flag added)
 
 Bill: Stores calculated usage totals and payment info
-
-Table AppUser {
-  id bigint [pk, increment]
-  username varchar
-  password varchar
-}
-
-Table Subscriber {
-  id bigint [pk, increment]
-  name varchar
-  app_user_id bigint [ref: > AppUser.id]
-}
-
-Table Usage {
-  id bigint [pk, increment]
-  type varchar
-  amount int
-  month varchar
-  year int
-  billed boolean
-  subscriber_id bigint [ref: > Subscriber.id]
-}
-
-Table Bill {
-  id bigint [pk, increment]
-  subscriber_id bigint [ref: > Subscriber.id]
-  month varchar
-  year int
-  phoneMinutes int
-  internetMb int
-  totalAmount double
-  isPaid boolean
-}
 
 
 ##  Sample Scenarios
