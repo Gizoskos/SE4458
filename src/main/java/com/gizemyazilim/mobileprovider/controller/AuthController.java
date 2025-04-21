@@ -38,10 +38,9 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         userRepository.save(user);
 
-        // Yeni kullanıcıya ait Subscriber oluştur
         Subscriber subscriber = new Subscriber();
         subscriber.setAppUser(user);
-        subscriber.setName(request.getUsername()); // veya istersen ayrı bir DTO alanı ekleyebilirsin
+        subscriber.setName(request.getUsername());
         subscriberRepository.save(subscriber);
 
         return ResponseEntity.ok("User and subscriber registered successfully");

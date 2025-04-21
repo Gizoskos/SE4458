@@ -19,5 +19,5 @@ import org.springframework.context.annotation.Configuration;
         bearerFormat = "JWT"
 )
 public class SwaggerConfig {
-    // Swagger UI'da JWT ile yetkilendirme için yapılandırma
+
 }

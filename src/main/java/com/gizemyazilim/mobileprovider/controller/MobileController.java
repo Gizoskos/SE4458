@@ -61,7 +61,6 @@ public class MobileController {
     }
 
     //  No Auth
-
     @PostMapping("/pay")
     public ResponseEntity<String> payBill(@PathVariable String version,
                                           @RequestBody PayBillRequestDto dto) {
