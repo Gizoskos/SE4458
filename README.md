@@ -88,6 +88,7 @@ Usage: Usage data for a subscriber in a month (billed flag added)
 
 Bill: Stores calculated usage totals and payment info
 
+```
 
 ##  Sample Scenarios
 
