@@ -8,7 +8,7 @@ A RESTful backend system for managing mobile usage, billing, and payments for su
 
 - **GitHub Repository:** [https://github.com/Gizoskos/SE4458](https://github.com/Gizoskos/SE4458)
 - **Swagger UI:** https://mobile-provider-api.onrender.com/swagger-ui/index.html
-- **Project Presentation Video:** [Google Drive]([https://drive.google.com/...](https://drive.google.com/file/d/1KDBVh22401LBhq-ih4c8yov0xR_6IRO1/view?usp=drive_link])
+- **Project Presentation Video:** ([GoogleDrive](https://drive.google.com/file/d/1KDBVh22401LBhq-ih4c8yov0xR_6IRO1/view?usp=drive_link])
 
 ---
 
@@ -87,7 +87,7 @@ Usage: Usage data for a subscriber in a month (billed flag added)
 
 Bill: Stores calculated usage totals and payment info
 
-![AltText](https://github.com/user-attachments/assets/fb231699-f0ec-4ae2-803a-d633004127e2)
+![App Structure](https://github.com/user-attachments/assets/fb231699-f0ec-4ae2-803a-d633004127e2)
 
 Table AppUser {
   id bigint [pk, increment]
