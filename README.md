@@ -8,7 +8,7 @@ A RESTful backend system for managing mobile usage, billing, and payments for su
 
 - **GitHub Repository:** [https://github.com/Gizoskos/SE4458](https://github.com/Gizoskos/SE4458)
 - **Swagger UI:** https://mobile-provider-api.onrender.com/swagger-ui/index.html
-- **Project Presentation Video:** ([GoogleDrive](https://drive.google.com/file/d/1KDBVh22401LBhq-ih4c8yov0xR_6IRO1/view?usp=drive_link])
+- **Project Presentation Video:** [GoogleDrive](https://drive.google.com/file/d/1KDBVh22401LBhq-ih4c8yov0xR_6IRO1/view?usp=drive_link])
 
 ---
 
@@ -71,6 +71,7 @@ A RESTful backend system for managing mobile usage, billing, and payments for su
 ---
 
 ## Data Model (ER Diagram)
+![App Structure](https://github.com/user-attachments/assets/fb231699-f0ec-4ae2-803a-d633004127e2)
 
 ```text
 AppUser ──────┐
@@ -86,8 +87,6 @@ Subscriber: One per AppUser
 Usage: Usage data for a subscriber in a month (billed flag added)
 
 Bill: Stores calculated usage totals and payment info
-
-![App Structure](https://github.com/user-attachments/assets/fb231699-f0ec-4ae2-803a-d633004127e2)
 
 Table AppUser {
   id bigint [pk, increment]
@@ -122,19 +121,16 @@ Table Bill {
   isPaid boolean
 }
 
+##  Sample Scenarios
+** Register → Login → Add Usage → Calculate Bill → Pay → Query Summary
 
-✅ Sample Scenarios
-✅ Register → Login → Add Usage → Calculate Bill → Pay → Query Summary
+** Add new usage to same month → Recalculate → If bill is paid → New bill created
 
-✅ Add new usage to same month → Recalculate → If bill is paid → New bill created
+** Add partial payment → Bill keeps remaining amount and is not marked as paid
 
-✅ Add partial payment → Bill keeps remaining amount and is not marked as paid
+** Swagger supports JWT token entry → Allows secure endpoint testing
 
-✅ Swagger supports JWT token entry → Allows secure endpoint testing
-
-
-
-✅ Assumptions
+##  Assumptions
 A Subscriber is automatically created with every new AppUser upon registration.
 
 On login, both JWT token and the corresponding subscriberId are returned for client-side convenience.
@@ -155,7 +151,7 @@ Pay takes amount from the user for partial payments.
 
 Months are represented as strings like "May", "June", "September" instead of numeric formats. This is assumed throughout the system.
 
-  How to Run Locally
+##  How to Run Locally
 Clone the repo:
 
 bash
