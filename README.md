@@ -74,12 +74,14 @@ A RESTful backend system for managing mobile usage, billing, and payments for su
 ![App Structure](https://github.com/user-attachments/assets/fb231699-f0ec-4ae2-803a-d633004127e2)
 
 ```text
+
 AppUser ──────┐
               ▼
          Subscriber ──< Usage
                         │
                         ▼
                       Bill
+
 AppUser: Login credentials
 
 Subscriber: One per AppUser
@@ -121,7 +123,9 @@ Table Bill {
   isPaid boolean
 }
 
+
 ##  Sample Scenarios
+
 ** Register → Login → Add Usage → Calculate Bill → Pay → Query Summary
 
 ** Add new usage to same month → Recalculate → If bill is paid → New bill created
@@ -130,7 +134,9 @@ Table Bill {
 
 ** Swagger supports JWT token entry → Allows secure endpoint testing
 
+
 ##  Assumptions
+
 A Subscriber is automatically created with every new AppUser upon registration.
 
 On login, both JWT token and the corresponding subscriberId are returned for client-side convenience.
@@ -151,7 +157,9 @@ Pay takes amount from the user for partial payments.
 
 Months are represented as strings like "May", "June", "September" instead of numeric formats. This is assumed throughout the system.
 
+
 ##  How to Run Locally
+
 Clone the repo:
 
 bash
@@ -177,15 +185,19 @@ mvn spring-boot:run
 Swagger:
 http://localhost:8080/swagger-ui/index.html
 
+
 ##  Issues Encountered & Fixes
 
 Problem Solutions:
+
 Usage data was being double billed-->Added billed flag in Usage entity
 Paid bills were being overwritten-->Prevented recalculation if isPaid=true
 No subscriber reference on login-->Included subscriber ID in AuthResponse
 Swagger JWT token not working-->Configured Swagger to accept Bearer tokens
 
+
 ##  Author
+
 Gizem Gültoprak
 Software Engineering - Yaşar University
 GitHub: Gizoskos
