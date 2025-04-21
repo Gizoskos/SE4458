@@ -87,7 +87,7 @@ Usage: Usage data for a subscriber in a month (billed flag added)
 
 Bill: Stores calculated usage totals and payment info
 
-![MobileProviderER_22070006034](https://github.com/user-attachments/assets/fb231699-f0ec-4ae2-803a-d633004127e2)
+![Model][MobileProviderER_22070006034](https://github.com/user-attachments/assets/fb231699-f0ec-4ae2-803a-d633004127e2)
 
 Table AppUser {
   id bigint [pk, increment]
