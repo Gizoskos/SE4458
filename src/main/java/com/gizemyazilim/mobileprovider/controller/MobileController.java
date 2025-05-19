@@ -48,16 +48,17 @@ public class MobileController {
     //  Requires Auth + Paging
     @GetMapping("/bill-detailed")
     public ResponseEntity<Page<BillDetailedDto>> getBillDetails(@PathVariable String version,
+                                                                @RequestParam Long subscriberNo,
                                                                 @RequestParam String month,
                                                                 @RequestParam int year,
                                                                 @RequestParam(defaultValue = "0") int page,
                                                                 @RequestParam(defaultValue = "10") int size) {
-        String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-        Subscriber subscriber = subscriberRepository.findByAppUserUsername(currentUsername)
-                .orElseThrow(() -> new RuntimeException("No subscribers found for this user"));
+        //String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        //Subscriber subscriber = subscriberRepository.findByAppUserUsername(currentUsername)
+          //      .orElseThrow(() -> new RuntimeException("No subscribers found for this user"));
 
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(billDetailService.getBillDetails(subscriber.getId(), month, year, pageable));
+        return ResponseEntity.ok(billDetailService.getBillDetails(subscriberNo, month, year, pageable));
     }
 
     //  No Auth
